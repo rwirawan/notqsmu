@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOTQS - Bogor Operations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <style>
+      :root {
+        --primary-color: #1e3a5f;
+        --secondary-color: #2d4f7c;
+        --accent-color: #5d8bd4;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .navbar-brand {
+        font-weight: 600;
+      }
+
+      .sidebar {
+        background-color: var(--primary-color);
+        color: white;
+        min-height: calc(100vh - 56px);
+        padding-top: 1rem;
+      }
+
+      .sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        padding: 0.75rem 1rem;
+        border-radius: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 0.5rem;
+        width: 20px;
+        text-align: center;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        margin-bottom: 1.5rem;
+      }
+
+      .card-header {
+        background-color: white;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        font-weight: 600;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+      }
+
+      .stats-card {
+        text-align: center;
+        padding: 1.5rem;
+        transition: transform 0.2s ease;
+      }
+
+      .stats-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .stats-card .value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--primary-color);
+      }
+
+      .stats-card .label {
+        color: var(--dark-color);
+        font-size: 0.875rem;
+      }
+
+      .quick-action-card {
+        border-left: 4px solid var(--primary-color);
+      }
+
+      .recent-activity-item {
+        border-left: 3px solid var(--accent-color);
+        padding-left: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .farmer-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--accent-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+      }
+
+      .amount-cell {
+        font-weight: 600;
+        text-align: right;
+      }
+
+      .status-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+      }
+
+      .sack-id {
+        font-family: "Courier New", monospace;
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+
+      .regional-distribution .progress {
+        height: 8px;
+      }
+
+      .new-feature-badge {
+        background-color: #dc3545;
+        font-size: 0.6rem;
+        margin-left: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="bogor-dashboard.html"> <i class="bi bi-droplet-half"></i> NOTQS - BOGOR </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <!-- New Features Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="bi bi-rocket-takeoff"></i> New Features
+                <span class="badge new-feature-badge">NEW</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="../../rest/blending-simulation.html"> <i class="bi bi-sliders"></i> Blending Simulation </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="../../rest/final-blending-workflow.html"> <i class="bi bi-gear"></i> Blending Execution </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="../../rest/discrepancy-management.html"> <i class="bi bi-exclamation-triangle"></i> Discrepancy Management </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="../../rest/advanced-analytics.html"> <i class="bi bi-graph-up-arrow"></i> Advanced Analytics </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="../../rest/mobile-companion-app.html" target="_blank"> <i class="bi bi-phone"></i> Mobile Companion</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"> <i class="bi bi-person-circle"></i> Ahmad (Bogor Operator) </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 col-lg-2 d-md-block sidebar">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="bogor-dashboard.html"> <i class="bi bi-speedometer2"></i> Dashboard </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bogor-sack-management.html"> <i class="bi bi-bag"></i> Sack Management </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bogor-payment-management.html"> <i class="bi bi-cash-coin"></i> Payments </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bogor-shipments.html"> <i class="bi bi-truck"></i> Shipments </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bogor-reports.html"> <i class="bi bi-graph-up"></i> Reports </a>
+              </li>
+
+              <!-- New Features Section in Sidebar -->
+              <li class="nav-item">
+                <hr class="dropdown-divider" />
+              </li>
+              <li class="nav-item">
+                <small class="text-muted px-3">NEW FEATURES</small>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="../../rest/mobile-companion-app.html" target="_blank">
+                  <i class="bi bi-phone"></i> Mobile App
+                  <span class="badge new-feature-badge">NEW</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="../../rest/discrepancy-management.html">
+                  <i class="bi bi-exclamation-triangle"></i> Discrepancies
+                  <span class="badge bg-warning">2</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="../../rest/advanced-analytics.html"> <i class="bi bi-graph-up-arrow"></i> Analytics </a>
+              </li>
+
+              <li class="nav-item">
+                <hr class="dropdown-divider" />
+              </li>
+              <li class="nav-item">
+                <small class="text-muted px-3">BOGOR OPERATOR</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-10 col-lg-10 ms-sm-auto px-md-4 py-4">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="../../bogor-login.html">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </nav>
+
+          <!-- Page Header -->
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Bogor Operations Dashboard</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group me-2">
+                <button class="btn btn-sm btn-outline-secondary">Today</button>
+                <button class="btn btn-sm btn-outline-secondary">Week</button>
+                <button class="btn btn-sm btn-outline-secondary">Month</button>
+              </div>
+              <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i> Export Report</button>
+            </div>
+          </div>
+
+          <!-- Statistics Cards -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card stats-card">
+                <div class="value">892</div>
+                <div class="label">Total Sacks Processed</div>
+                <small class="text-success">↑ 15% from last month</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stats-card">
+                <div class="value">IDR 28.5M</div>
+                <div class="label">Total Payments</div>
+                <small class="text-success">↑ 12% from last month</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stats-card">
+                <div class="value">87</div>
+                <div class="label">Active Farmers</div>
+                <small class="text-success">↑ 8 new this week</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stats-card">
+                <div class="value">96.8%</div>
+                <div class="label">System Efficiency</div>
+                <small class="text-warning">↓ 0.5% from last week</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Quick Actions -->
+            <div class="col-md-6">
+              <div class="card quick-action-card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <a href="bogor-sack-management.html" class="btn btn-outline-primary w-100 h-100 py-3">
+                        <i class="bi bi-bag display-6 d-block mb-2"></i>
+                        Sack Management
+                      </a>
+                    </div>
+                    <div class="col-md-6">
+                      <a href="bogor-payment-management.html" class="btn btn-outline-success w-100 h-100 py-3">
+                        <i class="bi bi-cash-coin display-6 d-block mb-2"></i>
+                        Process Payments
+                      </a>
+                    </div>
+                    <div class="col-md-6">
+                      <a href="bogor-shipments.html" class="btn btn-outline-info w-100 h-100 py-3">
+                        <i class="bi bi-truck display-6 d-block mb-2"></i>
+                        Shipment Tracking
+                      </a>
+                    </div>
+                    <div class="col-md-6">
+                      <a href="bogor-reports.html" class="btn btn-outline-warning w-100 h-100 py-3">
+                        <i class="bi bi-graph-up display-6 d-block mb-2"></i>
+                        View Reports
+                      </a>
+                    </div>
+
+                    <!-- New Feature Quick Actions -->
+                    <div class="col-md-6">
+                      <a href="../../rest/mobile-companion-app.html" target="_blank" class="btn btn-outline-warning w-100 h-100 py-3">
+                        <i class="bi bi-phone display-6 d-block mb-2"></i>
+                        Mobile App
+                        <span class="badge new-feature-badge">NEW</span>
+                      </a>
+                    </div>
+                    <div class="col-md-6">
+                      <a href="../../rest/discrepancy-management.html" class="btn btn-outline-danger w-100 h-100 py-3">
+                        <i class="bi bi-exclamation-triangle display-6 d-block mb-2"></i>
+                        Discrepancies
+                        <span class="badge bg-warning">2</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recent Activity -->
+              <div class="card mt-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                  <div class="recent-activity-item">
+                    <div class="d-flex justify-content-between">
+                      <strong>New sacks registered</strong>
+                      <small class="text-muted">3 hours ago</small>
+                    </div>
+                    <p class="mb-0">38 sacks from Farmer Group C in Bogor</p>
+                  </div>
+                  <div class="recent-activity-item">
+                    <div class="d-flex justify-content-between">
+                      <strong>Payments processed</strong>
+                      <small class="text-muted">5 hours ago</small>
+                    </div>
+                    <p class="mb-0">IDR 6.8M distributed to 38 farmers</p>
+                  </div>
+                  <div class="recent-activity-item">
+                    <div class="d-flex justify-content-between">
+                      <strong>Quality assessment</strong>
+                      <small class="text-muted">1 day ago</small>
+                    </div>
+                    <p class="mb-0">Moisture test completed for 42 sacks</p>
+                  </div>
+                  <div class="recent-activity-item">
+                    <div class="d-flex justify-content-between">
+                      <strong>New farmer registered</strong>
+                      <small class="text-muted">2 days ago</small>
+                    </div>
+                    <p class="mb-0">Farmer Dedi from Ciampea joined the program</p>
+                  </div>
+
+                  <!-- New Feature Activity -->
+                  <div class="recent-activity-item" style="border-left-color: #dc3545">
+                    <div class="d-flex justify-content-between">
+                      <strong>New Discrepancy Reported</strong>
+                      <small class="text-muted">Just now</small>
+                    </div>
+                    <p class="mb-0">Weight variance detected in shipment SHIP-BGR-20241110-005</p>
+                    <a href="../../rest/discrepancy-management.html" class="btn btn-sm btn-outline-danger mt-1">Review</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- System Overview -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Today's Operations</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row text-center mb-4">
+                    <div class="col-4">
+                      <div class="value text-primary">38</div>
+                      <div class="label">Today's Sacks</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="value text-success">32</div>
+                      <div class="label">Paid Today</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="value text-warning">6</div>
+                      <div class="label">Pending</div>
+                    </div>
+                  </div>
+
+                  <h6>Regional Distribution</h6>
+                  <div class="regional-distribution">
+                    <div class="mb-3">
+                      <div class="d-flex justify-content-between">
+                        <span>Bogor Central</span>
+                        <span class="text-muted">45%</span>
+                      </div>
+                      <div class="progress mb-2">
+                        <div class="progress-bar" style="width: 45%"></div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="d-flex justify-content-between">
+                        <span>Ciampea</span>
+                        <span class="text-muted">30%</span>
+                      </div>
+                      <div class="progress mb-2">
+                        <div class="progress-bar bg-success" style="width: 30%"></div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="d-flex justify-content-between">
+                        <span>Dramaga</span>
+                        <span class="text-muted">15%</span>
+                      </div>
+                      <div class="progress mb-2">
+                        <div class="progress-bar bg-info" style="width: 15%"></div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="d-flex justify-content-between">
+                        <span>Other Areas</span>
+                        <span class="text-muted">10%</span>
+                      </div>
+                      <div class="progress mb-2">
+                        <div class="progress-bar bg-warning" style="width: 10%"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recent Payments -->
+              <div class="card mt-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Recent Payments</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th>Farmer</th>
+                          <th>Amount</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <div class="farmer-avatar me-2">D</div>
+                              <div>
+                                <div>Dedi</div>
+                                <small class="text-muted">F-045</small>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="amount-cell">IDR 285,000</td>
+                          <td><span class="badge bg-success status-badge">PAID</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <div class="farmer-avatar me-2">S</div>
+                              <div>
+                                <div>Sri</div>
+                                <small class="text-muted">F-028</small>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="amount-cell">IDR 312,000</td>
+                          <td><span class="badge bg-success status-badge">PAID</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <div class="farmer-avatar me-2">R</div>
+                              <div>
+                                <div>Rudi</div>
+                                <small class="text-muted">F-039</small>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="amount-cell">IDR 267,000</td>
+                          <td><span class="badge bg-warning status-badge">PENDING</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="text-center mt-2">
+                    <a href="bogor-payment-management.html" class="btn btn-sm btn-outline-primary">View All Payments</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Tasks -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Pending Tasks</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card border-warning">
+                    <div class="card-body">
+                      <h6 class="card-title text-warning"><i class="bi bi-exclamation-triangle me-2"></i>Process Pending Payments</h6>
+                      <p class="card-text">IDR 1.2M awaiting payment processing for 6 farmers</p>
+                      <a href="bogor-payment-management.html" class="btn btn-sm btn-warning">Process Now</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card border-info">
+                    <div class="card-body">
+                      <h6 class="card-title text-info"><i class="bi bi-bag me-2"></i>Quality Check Required</h6>
+                      <p class="card-text">15 sacks awaiting moisture testing and quality assessment</p>
+                      <a href="bogor-sack-management.html" class="btn btn-sm btn-info">Check Now</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card border-primary">
+                    <div class="card-body">
+                      <h6 class="card-title text-primary"><i class="bi bi-truck me-2"></i>Shipment Preparation</h6>
+                      <p class="card-text">Prepare 150 sacks for Bandung shipment tomorrow</p>
+                      <a href="bogor-shipments.html" class="btn btn-sm btn-primary">Prepare</a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- New Feature Tasks -->
+                <div class="col-md-4 mt-3">
+                  <div class="card border-danger">
+                    <div class="card-body">
+                      <h6 class="card-title text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Review Discrepancies</h6>
+                      <p class="card-text">2 urgent discrepancies need attention</p>
+                      <a href="../../rest/discrepancy-management.html" class="btn btn-sm btn-danger">Review Now</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mt-3">
+                  <div class="card border-warning">
+                    <div class="card-body">
+                      <h6 class="card-title text-warning"><i class="bi bi-phone me-2"></i>Sync Mobile Data</h6>
+                      <p class="card-text">12 field records awaiting synchronization</p>
+                      <a href="../../rest/mobile-companion-app.html" target="_blank" class="btn btn-sm btn-warning">Sync Now</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("Bogor Dashboard loaded successfully")
+
+        // Update active menu based on current page
+        const currentPage = window.location.pathname.split("/").pop()
+        document.querySelectorAll(".sidebar .nav-link").forEach(link => {
+          link.classList.remove("active")
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active")
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

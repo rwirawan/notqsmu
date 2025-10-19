@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOTQS - Millennium Tangerang Sack Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <style>
+      :root {
+        --primary-color: #00695c;
+        --secondary-color: #00897b;
+        --accent-color: #4db6ac;
+        --light-color: #f5f7fa;
+        --dark-color: #263238;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .sidebar {
+        background-color: var(--primary-color);
+        color: white;
+        min-height: calc(100vh - 56px);
+        padding-top: 1rem;
+      }
+
+      .sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        padding: 0.75rem 1rem;
+        border-radius: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        margin-bottom: 1.5rem;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+
+      .premium-badge {
+        background-color: var(--accent-color);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="millennium-tangerang-dashboard.html"> <i class="bi bi-droplet-half"></i> NOTQS - MILLENNIUM TANGERANG </a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"> <i class="bi bi-person-circle"></i> Rizki (Tangerang Supervisor) </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 col-lg-2 d-md-block sidebar">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="millennium-tangerang-dashboard.html"> <i class="bi bi-speedometer2"></i> Dashboard </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="millennium-tangerang-sack-management.html"> <i class="bi bi-bag"></i> Sack Management </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="millennium-tangerang-payment-management.html"> <i class="bi bi-cash-coin"></i> Payments </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="millennium-tangerang-shipments.html"> <i class="bi bi-truck"></i> Shipments </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="millennium-tangerang-reports.html"> <i class="bi bi-graph-up"></i> Reports </a>
+              </li>
+              <li class="nav-item">
+                <hr class="dropdown-divider" />
+              </li>
+              <li class="nav-item">
+                <small class="text-muted px-3">MILLENNIUM TANGERANG</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <main class="col-md-10 col-lg-10 ms-sm-auto px-md-4 py-4">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="millennium-tangerang-dashboard.html">Home</a></li>
+              <li class="breadcrumb-item active">Sack Management</li>
+            </ol>
+          </nav>
+
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Premium Sack Management - Millennium Tangerang</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button class="btn btn-sm btn-outline-secondary me-2"><i class="bi bi-funnel"></i> Filter</button>
+              <button class="btn btn-sm btn-outline-secondary me-2"><i class="bi bi-download"></i> Export</button>
+              <button class="btn btn-sm btn-primary"><i class="bi bi-plus-circle"></i> Register Premium Sack</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Premium Sack Registry - Millennium Tangerang</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Sack ID</th>
+                      <th>Farmer</th>
+                      <th>Grade</th>
+                      <th>Gross Weight</th>
+                      <th>Moisture %</th>
+                      <th>Adjusted Weight</th>
+                      <th>Status</th>
+                      <th>Registration Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>TGR-P-20241026-001</strong></td>
+                      <td>Asep (F-112)</td>
+                      <td><span class="badge premium-badge">Premium</span></td>
+                      <td>26.8 kg</td>
+                      <td>7.2%</td>
+                      <td>25.8 kg</td>
+                      <td><span class="badge bg-success">Certified</span></td>
+                      <td>Oct 26, 2024</td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                        <button class="btn btn-sm btn-outline-warning">Edit</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>TGR-P-20241026-002</strong></td>
+                      <td>Dewi (F-095)</td>
+                      <td><span class="badge premium-badge">Premium</span></td>
+                      <td>25.5 kg</td>
+                      <td>7.8%</td>
+                      <td>24.8 kg</td>
+                      <td><span class="badge bg-success">Certified</span></td>
+                      <td>Oct 26, 2024</td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                        <button class="btn btn-sm btn-outline-warning">Edit</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>TGR-P-20241026-003</strong></td>
+                      <td>Hendra (F-078)</td>
+                      <td><span class="badge bg-warning">Standard</span></td>
+                      <td>27.2 kg</td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td><span class="badge bg-warning">Pending Test</span></td>
+                      <td>Oct 26, 2024</td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                        <button class="btn btn-sm btn-info">Upgrade Test</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+<!-- File: millennium-tangerang-sack-management.html -->

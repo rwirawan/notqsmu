@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOTQS - Operator Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <style>
+      :root {
+        --primary-color: #2c5530;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+      }
+
+      .register-container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .register-header {
+        background: var(--primary-color);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        border: 2px solid #e9ecef;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(44, 85, 48, 0.25);
+      }
+
+      .btn-register {
+        background: var(--primary-color);
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-register:hover {
+        background: #234326;
+        transform: translateY(-2px);
+      }
+
+      .password-strength {
+        height: 5px;
+        border-radius: 5px;
+        margin-top: 5px;
+        transition: all 0.3s ease;
+      }
+
+      .step-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+      }
+
+      .step {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #6c757d;
+      }
+
+      .step.active {
+        background: var(--primary-color);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <div class="register-container">
+            <!-- Header -->
+            <div class="register-header">
+              <h1><i class="bi bi-droplet-half"></i> NOTQS</h1>
+              <p class="mb-0">Operator Registration Portal</p>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="p-4 p-md-5">
+              <h3 class="text-center mb-4">Create Operator Account</h3>
+
+              <!-- Step Indicator -->
+              <div class="step-indicator">
+                <div class="step active">1</div>
+                <div class="step">2</div>
+                <div class="step">3</div>
+              </div>
+
+              <form id="registerForm">
+                <!-- Personal Information -->
+                <div class="mb-3">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" class="form-control" placeholder="Enter your full name" required />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" class="form-control" placeholder="Enter your email" required />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control" placeholder="+62 XXX-XXXX-XXXX" required />
+                </div>
+
+                <!-- Location & Role -->
+                <div class="mb-3">
+                  <label class="form-label">Operation Location</label>
+                  <select class="form-select" required>
+                    <option value="">Select operation location</option>
+                    <option value="manado">Manado Operations</option>
+                    <option value="bogor">Bogor Operations</option>
+                    <option value="tangerang">Millennium Tangerang</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Operator Role</label>
+                  <select class="form-select" required>
+                    <option value="">Select your role</option>
+                    <option value="operator">Field Operator</option>
+                    <option value="supervisor">Operations Supervisor</option>
+                    <option value="manager">Location Manager</option>
+                  </select>
+                </div>
+
+                <!-- Security Information -->
+                <div class="mb-3">
+                  <label class="form-label">Operator ID</label>
+                  <input type="text" class="form-control" placeholder="Create your operator ID" required />
+                  <small class="form-text text-muted">This will be your username for login</small>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" placeholder="Create a strong password" required />
+                  <div class="password-strength" id="passwordStrength"></div>
+                  <small class="form-text text-muted">Minimum 8 characters with numbers and special characters</small>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Confirm Password</label>
+                  <input type="password" class="form-control" placeholder="Confirm your password" required />
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="terms" required />
+                  <label class="form-check-label" for="terms"> I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a href="#" class="text-decoration-none">Privacy Policy</a> </label>
+                </div>
+
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="dataPolicy" required />
+                  <label class="form-check-label" for="dataPolicy"> I understand that all operational data is confidential and secured </label>
+                </div>
+
+                <button type="submit" class="btn btn-register text-white w-100 mb-3"><i class="bi bi-person-plus-fill"></i> Create Operator Account</button>
+
+                <div class="text-center">
+                  <a href="login.html" class="text-decoration-none">Already have an account? Login here</a>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Security Notice -->
+          <div class="text-center mt-3">
+            <small class="text-white"> <i class="bi bi-shield-check"></i> All data encrypted • GDPR Compliant </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Password strength indicator
+      document.getElementById("password").addEventListener("input", function (e) {
+        const password = e.target.value
+        const strengthBar = document.getElementById("passwordStrength")
+        let strength = 0
+
+        if (password.length >= 8) strength += 25
+        if (/[A-Z]/.test(password)) strength += 25
+        if (/[0-9]/.test(password)) strength += 25
+        if (/[^A-Za-z0-9]/.test(password)) strength += 25
+
+        strengthBar.style.width = strength + "%"
+
+        if (strength < 50) {
+          strengthBar.style.background = "#dc3545"
+        } else if (strength < 75) {
+          strengthBar.style.background = "#ffc107"
+        } else {
+          strengthBar.style.background = "#28a745"
+        }
+      })
+
+      document.getElementById("registerForm").addEventListener("submit", function (e) {
+        e.preventDefault()
+
+        // Simulate registration process
+        alert("Account registration submitted for approval. You will receive an email confirmation.")
+
+        // Redirect to login
+        setTimeout(() => {
+          window.location.href = "login.html"
+        }, 2000)
+      })
+    </script>
+  </body>
+</html>
+<!-- File: register.html -->

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOTQS - Blending Simulation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+      .stock-card {
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .stock-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .stock-card.selected {
+        border: 2px solid #0d6efd;
+        background-color: #f8f9fa;
+      }
+      .blend-preview {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .spec-match {
+        color: #198754;
+      }
+      .spec-warning {
+        color: #ffc107;
+      }
+      .spec-danger {
+        color: #dc3545;
+      }
+      .drag-area {
+        min-height: 200px;
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"> <i class="fas fa-flask"></i> NOTQS - Blending Simulation </a>
+        <div class="navbar-nav ms-auto">
+          <span class="navbar-text">Millennium Blender: Agung</span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+      <div class="row">
+        <!-- Available Stock Panel -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <h5 class="mb-0"><i class="fas fa-database"></i> Available Oil Lots</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Search lots..." />
+              </div>
+
+              <!-- Premium Lots -->
+              <h6 class="text-success"><i class="fas fa-crown"></i> Premium Grade</h6>
+              <div class="stock-card card mb-2" data-lot="MLN-PRM-20241026-001">
+                <div class="card-body py-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" />
+                    <strong>MLN-PRM-20241026-001</strong>
+                  </div>
+                  <small class="text-muted">Weight: 150kg | Myristicin: 65%</small>
+                </div>
+              </div>
+
+              <!-- Standard Lots -->
+              <h6 class="text-warning mt-3"><i class="fas fa-check-circle"></i> Standard Grade</h6>
+              <div class="stock-card card mb-2" data-lot="MLN-STD-20241026-002">
+                <div class="card-body py-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" />
+                    <strong>MLN-STD-20241026-002</strong>
+                  </div>
+                  <small class="text-muted">Weight: 200kg | Myristicin: 58%</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Blending Workspace -->
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header bg-success text-white">
+              <h5 class="mb-0"><i class="fas fa-sliders-h"></i> Blending Workspace</h5>
+            </div>
+            <div class="card-body">
+              <!-- Target Specifications -->
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <h6>Buyer Requirements</h6>
+                  <div class="mb-2">
+                    <label class="form-label">Myristicin Content</label>
+                    <input type="range" class="form-range" min="55" max="70" value="62" />
+                    <div class="d-flex justify-content-between">
+                      <small>55%</small>
+                      <small><strong>62% Target</strong></small>
+                      <small>70%</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <h6>Current Blend</h6>
+                  <div class="blend-preview p-3 rounded text-center">
+                    <h4>Myristicin: <strong>61.8%</strong></h4>
+                    <small class="spec-match"><i class="fas fa-check"></i> Within Target Range</small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Selected Lots -->
+              <div class="drag-area p-3 mb-4 text-center">
+                <i class="fas fa-arrow-down fa-2x mb-2 text-muted"></i>
+                <p class="text-muted">Drag oil lots here or select from left panel</p>
+
+                <div class="selected-lots">
+                  <span class="badge bg-primary me-2">MLN-PRM-20241026-001 (50kg)</span>
+                  <span class="badge bg-warning me-2">MLN-STD-20241026-002 (100kg)</span>
+                </div>
+              </div>
+
+              <!-- Blend Controls -->
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-primary"><i class="fas fa-calculator"></i> Calculate Blend</button>
+                    <button class="btn btn-outline-success"><i class="fas fa-save"></i> Save Simulation</button>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="alert alert-info">
+                    <small><i class="fas fa-info-circle"></i> <strong>Blend Summary:</strong> Total 150kg | Premium: 33% | Standard: 67%</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Saved Simulations -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h6 class="mb-0"><i class="fas fa-history"></i> Saved Simulations</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>Simulation Name</th>
+                      <th>Total Weight</th>
+                      <th>Myristicin</th>
+                      <th>Match Score</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Buyer_A_Premium_Blend</td>
+                      <td>150kg</td>
+                      <td>61.8%</td>
+                      <td><span class="badge bg-success">95%</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">Load</button>
+                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Mock interactivity for blending simulation
+      document.querySelectorAll(".stock-card").forEach(card => {
+        card.addEventListener("click", function () {
+          this.classList.toggle("selected")
+          const checkbox = this.querySelector(".form-check-input")
+          checkbox.checked = !checkbox.checked
+        })
+      })
+    </script>
+  </body>
+</html>

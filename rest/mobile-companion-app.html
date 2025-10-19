@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOTQS - Mobile Companion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .mobile-container {
+        max-width: 400px;
+        margin: 0 auto;
+        background: white;
+        min-height: 100vh;
+      }
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        max-width: 400px;
+      }
+      .nav-item {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+      }
+      .nav-item.active {
+        color: #0d6efd;
+        border-top: 2px solid #0d6efd;
+      }
+      .offline-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      .scan-overlay {
+        background: linear-gradient(transparent 40%, rgba(0, 255, 0, 0.1) 50%, transparent 60%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mobile-container position-relative">
+      <!-- Offline Indicator -->
+      <div class="offline-badge">
+        <span class="badge bg-warning"> <i class="fas fa-wifi"></i> OFFLINE </span>
+      </div>
+
+      <!-- Header -->
+      <div class="bg-primary text-white p-3 text-center">
+        <h5 class="mb-0"><i class="fas fa-seedling"></i> NOTQS Mobile</h5>
+        <small>Manado Operator: Budi</small>
+      </div>
+
+      <!-- Sync Status -->
+      <div class="alert alert-warning m-3 py-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <small><i class="fas fa-sync"></i> 3 items pending sync</small>
+          <button class="btn btn-sm btn-outline-primary">Sync Now</button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="p-3">
+        <!-- Quick Actions -->
+        <div class="row text-center mb-4">
+          <div class="col-4">
+            <div class="card">
+              <div class="card-body py-3">
+                <i class="fas fa-barcode fa-2x text-primary mb-2"></i>
+                <small>Scan Sack</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <div class="card-body py-3">
+                <i class="fas fa-tint fa-2x text-success mb-2"></i>
+                <small>Moisture Test</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <div class="card-body py-3">
+                <i class="fas fa-shipping-fast fa-2x text-warning mb-2"></i>
+                <small>New Shipment</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <h6>Recent Activity</h6>
+        <div class="list-group">
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>MDO-20241115-025</strong>
+                <small class="d-block text-muted">Farmer: Samsudin | 25.5kg</small>
+              </div>
+              <span class="badge bg-success">Registered</span>
+            </div>
+          </div>
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>MDO-20241115-024</strong>
+                <small class="d-block text-muted">Farmer: Ahmad | Moisture: 12.5%</small>
+              </div>
+              <span class="badge bg-warning">Tested</span>
+            </div>
+          </div>
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>SHIP-MDO-20241114-002</strong>
+                <small class="d-block text-muted">15 sacks to Millennium</small>
+              </div>
+              <span class="badge bg-info">Shipped</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scanner Interface (Hidden by default) -->
+        <div class="card mt-4 d-none" id="scannerView">
+          <div class="card-header bg-dark text-white text-center">
+            <h6 class="mb-0">Scan Sack Barcode</h6>
+          </div>
+          <div class="card-body p-0">
+            <!-- Mock Scanner -->
+            <div class="scan-overlay text-center p-4" style="height: 300px">
+              <div class="border rounded m-4 p-4 bg-light">
+                <i class="fas fa-camera fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Scanner would activate here</p>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-primary btn-sm" onclick="mockScan()"><i class="fas fa-barcode"></i> Mock Scan</button>
+                  <button class="btn btn-outline-secondary btn-sm" onclick="hideScanner()">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sack Registration Form -->
+        <div class="card mt-4" id="sackForm">
+          <div class="card-header">
+            <h6 class="mb-0"><i class="fas fa-edit"></i> New Sack Registration</h6>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="mb-3">
+                <label class="form-label">Farmer</label>
+                <select class="form-select">
+                  <option>Select Farmer</option>
+                  <option>Samsudin (FARM-001)</option>
+                  <option>Ahmad (FARM-002)</option>
+                  <option>Maria (FARM-003)</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Gross Weight (kg)</label>
+                <input type="number" class="form-control" step="0.1" placeholder="25.5" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Notes (Optional)</label>
+                <textarea class="form-control" rows="2" placeholder="Any observations..."></textarea>
+              </div>
+              <div class="d-grid gap-2">
+                <button class="btn btn-success"><i class="fas fa-save"></i> Save Locally</button>
+                <button class="btn btn-outline-primary" type="button" onclick="showScanner()"><i class="fas fa-barcode"></i> Scan Barcode</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Navigation -->
+      <div class="bottom-nav bg-white border-top">
+        <div class="d-flex">
+          <div class="nav-item active">
+            <i class="fas fa-home"></i>
+            <div class="small">Home</div>
+          </div>
+          <div class="nav-item">
+            <i class="fas fa-clipboard-list"></i>
+            <div class="small">Tasks</div>
+          </div>
+          <div class="nav-item">
+            <i class="fas fa-history"></i>
+            <div class="small">History</div>
+          </div>
+          <div class="nav-item">
+            <i class="fas fa-cog"></i>
+            <div class="small">Settings</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function showScanner() {
+        document.getElementById("scannerView").classList.remove("d-none")
+        document.getElementById("sackForm").classList.add("d-none")
+      }
+
+      function hideScanner() {
+        document.getElementById("scannerView").classList.add("d-none")
+        document.getElementById("sackForm").classList.remove("d-none")
+      }
+
+      function mockScan() {
+        alert("Mock: Barcode scanned successfully! Sack ID: MDO-20241115-026")
+        hideScanner()
+      }
+
+      // Mock offline functionality
+      document.querySelectorAll(".nav-item").forEach(item => {
+        item.addEventListener("click", function () {
+          document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"))
+          this.classList.add("active")
+        })
+      })
+    </script>
+  </body>
+</html>

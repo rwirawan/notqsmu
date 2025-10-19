@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOTQS - Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <style>
+      :root {
+        --primary-color: #2c5530;
+        --secondary-color: #4a7c59;
+        --accent-color: #8fb996;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .navbar-brand {
+        font-weight: 600;
+      }
+
+      .sidebar {
+        background-color: var(--primary-color);
+        color: white;
+        min-height: calc(100vh - 56px);
+        padding-top: 1rem;
+      }
+
+      .sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        padding: 0.75rem 1rem;
+        border-radius: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 0.5rem;
+        width: 20px;
+        text-align: center;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        margin-bottom: 1.5rem;
+      }
+
+      .card-header {
+        background-color: white;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        font-weight: 600;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+      }
+
+      .report-card {
+        border-left: 4px solid var(--primary-color);
+        transition: transform 0.2s ease;
+      }
+
+      .report-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+      }
+
+      .report-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-right: 1rem;
+      }
+
+      .report-stat {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-color);
+      }
+
+      .filter-section {
+        background-color: #f8f9fa;
+        border-radius: 0.375rem;
+        padding: 1rem;
+      }
+
+      .report-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+      }
+
+      .report-actions .btn {
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .report-category {
+        border-left: 3px solid var(--accent-color);
+        padding-left: 1rem;
+        margin-bottom: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"> <i class="bi bi-droplet-half"></i> NOTQS </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"> <i class="bi bi-person-circle"></i> Budi (Manado Operator) </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 col-lg-2 d-md-block sidebar">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html"> <i class="bi bi-speedometer2"></i> Dashboard </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="sack-management.html"> <i class="bi bi-bag"></i> Sack Management </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="payment-management.html"> <i class="bi bi-cash-coin"></i> Payments </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="shipments.html"> <i class="bi bi-truck"></i> Shipments </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="report-list.html"> <i class="bi bi-graph-up"></i> Reports </a>
+              </li>
+              <li class="nav-item">
+                <hr class="dropdown-divider" />
+              </li>
+              <li class="nav-item">
+                <small class="text-muted px-3">MANADO OPERATOR</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-10 col-lg-10 ms-sm-auto px-md-4 py-4">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active">Reports</li>
+            </ol>
+          </nav>
+
+          <!-- Page Header -->
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Reports & Analytics</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button class="btn btn-sm btn-outline-secondary me-2"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+              <button class="btn btn-sm btn-primary"><i class="bi bi-plus-circle"></i> Generate New Report</button>
+            </div>
+          </div>
+
+          <!-- Report Summary Cards -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body text-center">
+                  <div class="report-stat">24</div>
+                  <div class="text-muted">Available Reports</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body text-center">
+                  <div class="report-stat">8</div>
+                  <div class="text-muted">Scheduled Reports</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body text-center">
+                  <div class="report-stat">5</div>
+                  <div class="text-muted">Reports Generated Today</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body text-center">
+                  <div class="report-stat">IDR 42.8M</div>
+                  <div class="text-muted">Total Payments This Month</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter Section -->
+          <div class="card mb-4 filter-section">
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="form-label">Report Type</label>
+                  <select class="form-select">
+                    <option value="">All Report Types</option>
+                    <option value="FINANCIAL">Financial Reports</option>
+                    <option value="OPERATIONAL">Operational Reports</option>
+                    <option value="INVENTORY">Inventory Reports</option>
+                    <option value="QUALITY">Quality Reports</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Date Range</label>
+                  <select class="form-select">
+                    <option value="">All Time</option>
+                    <option value="TODAY">Today</option>
+                    <option value="WEEK">This Week</option>
+                    <option value="MONTH">This Month</option>
+                    <option value="QUARTER">This Quarter</option>
+                    <option value="YEAR">This Year</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Status</label>
+                  <select class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="READY">Ready</option>
+                    <option value="SCHEDULED">Scheduled</option>
+                    <option value="RUNNING">Generating</option>
+                    <option value="ERROR">Error</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Search</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Report name or ID" />
+                    <button class="btn btn-outline-secondary" type="button">
+                      <i class="bi bi-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12">
+                  <button class="btn btn-primary">Apply Filters</button>
+                  <button class="btn btn-outline-secondary">Clear</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Report Categories -->
+
+          <!-- Financial Reports -->
+          <div class="report-category">
+            <h4 class="mb-3">Financial Reports</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card report-card mb-4">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start">
+                      <div class="report-icon bg-primary text-white">
+                        <i class="bi bi-cash-coin"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h5 class="card-title">Daily Payment Summary</h5>
+                        <p class="card-text">Overview of all payments processed today with farmer details and amounts.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <span class="badge bg-success report-badge">Ready</span>
+                            <small class="text-muted ms-2">Updated: Today 09:30</small>
+                          </div>
+                          <div class="report-actions">
+                            <button class="btn btn-sm btn-outline-primary">View</button>
+                            <button class="btn btn-sm btn-outline-secondary">Export</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card report-card mb-4">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start">
+                      <div class="report-icon bg-success text-white">
+                        <i class="bi bi-graph-up"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h5 class="card-title">Monthly Revenue Report</h5>
+                        <p class="card-text">Complete financial overview with trends, comparisons, and projections.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <span class="badge bg-success report-badge">Ready</span>
+                            <small class="text-muted ms-2">Updated: Oct 25, 2024</small>
+                          </div>
+                          <div class="report-actions">
+                            <button class="btn btn-sm btn-outline-primary">View</button>
+                            <button class="btn btn-sm btn-outline-secondary">Export</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card report-card mb-4">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start">
+                      <div class="report-icon bg-warning text-dark">
+                        <i class="bi bi-clock-history"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h5 class="card-title">Pending Payments Report</h5>
+                        <p class="card-text">List of all pending payments with reasons and expected completion dates.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <span class="badge bg-warning report-badge">Scheduled</span>
+                            <small class="text-muted ms-2">Next run: Today 18:00</small>
+                          </div>
+                          <div class="report-actions">
+                            <button class="btn btn-sm btn-outline-primary">View</button>
+                            <button class="btn btn-sm btn-outline-secondary">Schedule</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card report-card mb-4">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start">
+                      <div class="report-icon bg-info text-white">
+                        <i class="bi bi-person-check"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h5 class="card-title">Farmer Payment History</h5>
+                        <p class="card-text">Detailed payment history for individual farmers with transaction records.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <span class="badge bg-success report-badge">Ready</span>
+                            <small class="text-muted ms-2">Updated: Today 08:15</small>
+                          </div>
+                          <div class="report-actions">
+                            <button class="btn btn-sm btn-outline-primary">View</button>
+                            <button class="btn btn-sm btn-outline-secondary">Export</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Operational Reports -->
+          <div class="report-category">
+            <h4 class="mb-3">Operational Reports</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card report-card mb-4">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start">
+                      <div class="report-icon bg-secondary text-white">
+                        <i class="bi bi-bag"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h5 class="card-title">Daily Sack Processing</h5>
+                        <p class="card-text">Summary of sacks received, processed, and shipped with quality metrics.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <span class="badge bg-success report-badge">Ready</span>
+                            <small class="text-muted ms-2">Updated: Today 10:45</small>
+                          </div>
+                          <div class="report-actions">
+                            <button class="btn btn-sm btn-outline-primary">View</button>
+                            <button class="btn btn-sm btn-outline-secondary">Export</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card report-card mb-4">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start">
+                      <div class="report-icon bg-dark text-white">
+                        <i class="bi bi-truck"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h5 class="card-title">Shipment Tracking Report</h5>
+                        <p class="card-text">Current status of all shipments with delivery timelines and issues.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <span class="badge bg-success report-badge">Ready</span>
+                            <small class="text-muted ms-2">Updated: Today 09:20</small>
+                          </div>
+                          <div class="report-actions">
+                            <button class="btn btn-sm btn-outline-primary">View</button>
+                            <button class="btn btn-sm btn-outline-secondary">Export</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quality Reports -->
+          <div class="report-category">
+            <h4 class="mb-3">Quality & Compliance Reports</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card report-card mb-4">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start">
+                      <div class="report-icon bg-danger text-white">
+                        <i class="bi bi-droplet"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h5 class="card-title">Moisture Content Analysis</h5>
+                        <p class="card-text">Detailed analysis of moisture content across all processed sacks.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <span class="badge bg-success report-badge">Ready</span>
+                            <small class="text-muted ms-2">Updated: Today 11:30</small>
+                          </div>
+                          <div class="report-actions">
+                            <button class="btn btn-sm btn-outline-primary">View</button>
+                            <button class="btn btn-sm btn-outline-secondary">Export</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card report-card mb-4">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start">
+                      <div class="report-icon bg-info text-white">
+                        <i class="bi bi-clipboard-check"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h5 class="card-title">Quality Compliance Report</h5>
+                        <p class="card-text">Compliance metrics and quality standards adherence across operations.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <span class="badge bg-warning report-badge">Running</span>
+                            <small class="text-muted ms-2">Generating...</small>
+                          </div>
+                          <div class="report-actions">
+                            <button class="btn btn-sm btn-outline-primary" disabled>View</button>
+                            <button class="btn btn-sm btn-outline-secondary" disabled>Export</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recently Generated Reports -->
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Recently Generated Reports</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Report Name</th>
+                      <th>Type</th>
+                      <th>Generated On</th>
+                      <th>Size</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Daily Payment Summary</td>
+                      <td>Financial</td>
+                      <td>Oct 26, 2024 09:30</td>
+                      <td>2.4 MB</td>
+                      <td><span class="badge bg-success">Ready</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                        <button class="btn btn-sm btn-outline-secondary">Download</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Sack Processing Daily</td>
+                      <td>Operational</td>
+                      <td>Oct 26, 2024 08:15</td>
+                      <td>1.8 MB</td>
+                      <td><span class="badge bg-success">Ready</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                        <button class="btn btn-sm btn-outline-secondary">Download</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Monthly Revenue Analysis</td>
+                      <td>Financial</td>
+                      <td>Oct 25, 2024 16:45</td>
+                      <td>5.2 MB</td>
+                      <td><span class="badge bg-success">Ready</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                        <button class="btn btn-sm btn-outline-secondary">Download</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("Reports page loaded successfully")
+
+        // Update active menu
+        const currentPage = window.location.pathname.split("/").pop()
+        document.querySelectorAll(".sidebar .nav-link").forEach(link => {
+          link.classList.remove("active")
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active")
+          }
+        })
+
+        // Add click handlers for report actions
+        document.querySelectorAll(".btn-outline-primary").forEach(button => {
+          button.addEventListener("click", function () {
+            const reportName = this.closest(".card-body").querySelector(".card-title").textContent
+            alert(`Opening report: ${reportName}`)
+          })
+        })
+      })
+    </script>
+  </body>
+</html>

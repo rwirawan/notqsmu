@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOTQS - Advanced Analytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+      .kpi-card {
+        transition: all 0.3s;
+      }
+      .kpi-card:hover {
+        transform: translateY(-2px);
+      }
+      .chart-container {
+        height: 200px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+      .trend-up {
+        color: #198754;
+      }
+      .trend-down {
+        color: #dc3545;
+      }
+      .dashboard-section {
+        margin-bottom: 2rem;
+      }
+      .export-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"> <i class="fas fa-chart-bar"></i> NOTQS - Advanced Analytics </a>
+        <div class="navbar-nav ms-auto">
+          <span class="navbar-text">Central Manager: Mr. Wirawan</span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+      <!-- Date Range Selector -->
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body py-2">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="btn-group">
+                    <button class="btn btn-outline-primary btn-sm active">Today</button>
+                    <button class="btn btn-outline-primary btn-sm">Week</button>
+                    <button class="btn btn-outline-primary btn-sm">Month</button>
+                    <button class="btn btn-outline-primary btn-sm">Quarter</button>
+                    <button class="btn btn-outline-primary btn-sm">Custom Range</button>
+                  </div>
+                </div>
+                <div class="col-md-4 text-end">
+                  <small class="text-muted">Last updated: Today, 10:30 AM</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Overview -->
+      <div class="dashboard-section">
+        <h4><i class="fas fa-tachometer-alt"></i> Operational KPIs</h4>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="kpi-card card text-center">
+              <div class="card-body">
+                <h3 class="text-primary">98.2%</h3>
+                <small>First-Pass Quality Rate</small>
+                <div class="trend-up"><i class="fas fa-arrow-up"></i> 1.5% from last month</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="kpi-card card text-center">
+              <div class="card-body">
+                <h3 class="text-success">1.2%</h3>
+                <small>Average Transport Shrinkage</small>
+                <div class="trend-up"><i class="fas fa-arrow-down"></i> 0.3% improvement</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="kpi-card card text-center">
+              <div class="card-body">
+                <h3 class="text-warning">4.1%</h3>
+                <small>Average Yield</small>
+                <div class="trend-down"><i class="fas fa-arrow-down"></i> 0.2% from target</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="kpi-card card text-center">
+              <div class="card-body">
+                <h3 class="text-info">24h</h3>
+                <small>Avg Farmer Payment Time</small>
+                <div class="trend-up"><i class="fas fa-arrow-down"></i> 12h improvement</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts and Detailed Analytics -->
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-md-8">
+          <!-- Yield Analysis -->
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h6 class="mb-0"><i class="fas fa-chart-line"></i> Yield Analysis by Location</h6>
+              <button class="btn btn-sm btn-outline-primary export-btn"><i class="fas fa-download"></i> Export</button>
+            </div>
+            <div class="card-body">
+              <div class="chart-container d-flex align-items-center justify-content-center">
+                <div class="text-center text-muted">
+                  <i class="fas fa-chart-bar fa-2x mb-2"></i>
+                  <p>Yield comparison chart would display here</p>
+                  <small>Manado: 4.3% | Bogor: 4.1% | Millennium: 4.0%</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quality Trends -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6 class="mb-0"><i class="fas fa-check-circle"></i> Quality Compliance Trends</h6>
+            </div>
+            <div class="card-body">
+              <div class="chart-container d-flex align-items-center justify-content-center">
+                <div class="text-center text-muted">
+                  <i class="fas fa-chart-line fa-2x mb-2"></i>
+                  <p>Quality compliance trend chart</p>
+                  <small>Premium: 85% | Standard: 12% | Reject: 3%</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-4">
+          <!-- Discrepancy Dashboard -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Discrepancy Overview</h6>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <strong>Open Tickets by Type:</strong>
+                <div class="mt-2">
+                  <div class="d-flex justify-content-between mb-1">
+                    <small>Transport Shrinkage</small>
+                    <small class="text-danger">5</small>
+                  </div>
+                  <div class="d-flex justify-content-between mb-1">
+                    <small>Yield Variance</small>
+                    <small class="text-warning">3</small>
+                  </div>
+                  <div class="d-flex justify-content-between mb-1">
+                    <small>Quality Issues</small>
+                    <small class="text-info">2</small>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <small>Payment Disputes</small>
+                    <small class="text-secondary">1</small>
+                  </div>
+                </div>
+              </div>
+              <div class="alert alert-warning">
+                <small><i class="fas fa-clock"></i> <strong>2 tickets</strong> approaching 48h SLA</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Location Performance -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6 class="mb-0"><i class="fas fa-map-marker-alt"></i> Location Performance</h6>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <strong>Manado</strong>
+                <div class="progress mb-2" style="height: 8px">
+                  <div class="progress-bar bg-success" style="width: 95%"></div>
+                </div>
+                <small class="text-muted">95% On-time Payment</small>
+              </div>
+              <div class="mb-3">
+                <strong>Bogor</strong>
+                <div class="progress mb-2" style="height: 8px">
+                  <div class="progress-bar bg-warning" style="width: 88%"></div>
+                </div>
+                <small class="text-muted">88% Yield Accuracy</small>
+              </div>
+              <div class="mb-3">
+                <strong>Millennium</strong>
+                <div class="progress mb-2" style="height: 8px">
+                  <div class="progress-bar bg-info" style="width: 92%"></div>
+                </div>
+                <small class="text-muted">92% QC Compliance</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Reports -->
+          <div class="card">
+            <div class="card-header">
+              <h6 class="mb-0"><i class="fas fa-file-alt"></i> Quick Reports</h6>
+            </div>
+            <div class="card-body">
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary btn-sm"><i class="fas fa-file-pdf"></i> Monthly Performance</button>
+                <button class="btn btn-outline-success btn-sm"><i class="fas fa-file-excel"></i> Yield Analysis</button>
+                <button class="btn btn-outline-warning btn-sm"><i class="fas fa-file-csv"></i> Quality Metrics</button>
+                <button class="btn btn-outline-info btn-sm"><i class="fas fa-chart-pie"></i> Farmer Payments</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Report Builder -->
+      <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+          <h6 class="mb-0"><i class="fas fa-magic"></i> Custom Report Builder</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <h6>Data Sources</h6>
+              <div class="list-group">
+                <div class="list-group-item">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">Sack Registrations</label>
+                  </div>
+                </div>
+                <div class="list-group-item">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked />
+                    <label class="form-check-label">Yield Data</label>
+                  </div>
+                </div>
+                <div class="list-group-item">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">QC Results</label>
+                  </div>
+                </div>
+                <div class="list-group-item">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">Payment Records</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6>Visualization</h6>
+              <div class="row text-center">
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-body py-3">
+                      <i class="fas fa-chart-bar fa-2x text-primary"></i>
+                      <div class="small">Bar Chart</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-body py-3">
+                      <i class="fas fa-chart-line fa-2x text-success"></i>
+                      <div class="small">Line Chart</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-body py-3">
+                      <i class="fas fa-chart-pie fa-2x text-warning"></i>
+                      <div class="small">Pie Chart</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h6>Export Options</h6>
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary"><i class="fas fa-file-pdf"></i> PDF Report</button>
+                <button class="btn btn-outline-success"><i class="fas fa-file-excel"></i> Excel Export</button>
+                <button class="btn btn-outline-info"><i class="fas fa-share-alt"></i> Share Dashboard</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

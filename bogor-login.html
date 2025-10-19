@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOTQS - Bogor Operations Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <style>
+      :root {
+        --primary-color: #1e3a5f;
+        --secondary-color: #2d4f7c;
+      }
+
+      body {
+        background: linear-gradient(135deg, #1e3a5f 0%, #2d4f7c 100%);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+      }
+
+      .login-container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .login-header {
+        background: var(--primary-color);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .location-badge {
+        background: var(--secondary-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+      }
+
+      .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        border: 2px solid #e9ecef;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(30, 58, 95, 0.25);
+      }
+
+      .btn-login {
+        background: var(--primary-color);
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+          <div class="login-container">
+            <!-- Header -->
+            <div class="login-header">
+              <h1><i class="bi bi-droplet-half"></i> NOTQS</h1>
+              <div class="location-badge d-inline-block mt-2"><i class="bi bi-geo-alt-fill"></i> Bogor Operations</div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="p-4 p-md-5">
+              <h4 class="text-center mb-4">Bogor Operator Login</h4>
+
+              <form id="bogorLoginForm">
+                <div class="mb-3">
+                  <label class="form-label">Operator ID</label>
+                  <input type="text" class="form-control" placeholder="BGR-OP-XXXX" required />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Password</label>
+                  <input type="password" class="form-control" placeholder="Enter your password" required />
+                </div>
+
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="rememberMe" />
+                  <label class="form-check-label" for="rememberMe">Remember this device</label>
+                </div>
+
+                <button type="submit" class="btn btn-login text-white w-100 mb-3"><i class="bi bi-lock-fill"></i> Access Bogor Operations</button>
+
+                <div class="text-center">
+                  <a href="login.html" class="text-decoration-none"> <i class="bi bi-arrow-left"></i> Back to Main Login </a>
+                  <a href=".\Demo\Bogor\index.html" class="text-decoration-none"> Continue <i class="bi bi-arrow-right"></i> </a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("bogorLoginForm").addEventListener("submit", function (e) {
+        e.preventDefault()
+
+        // Simulate authentication
+        alert("Authenticating Bogor operator...")
+
+        // Redirect to Bogor dashboard
+        window.location.href = "bogor-dashboard.html"
+      })
+    </script>
+  </body>
+</html>
+<!-- File: bogor-login.html -->

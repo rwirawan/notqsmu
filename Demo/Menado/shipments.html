@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shipment Management - NOTQS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <style>
+      :root {
+        --primary-color: #2c5530;
+        --secondary-color: #4a7c59;
+        --accent-color: #8fb996;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .navbar-brand {
+        font-weight: 600;
+      }
+
+      .sidebar {
+        background-color: var(--primary-color);
+        color: white;
+        min-height: calc(100vh - 56px);
+        padding-top: 1rem;
+      }
+
+      .sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        padding: 0.75rem 1rem;
+        border-radius: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 0.5rem;
+        width: 20px;
+        text-align: center;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        margin-bottom: 1.5rem;
+      }
+
+      .card-header {
+        background-color: white;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        font-weight: 600;
+      }
+
+      .status-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+      }
+
+      .table th {
+        border-top: none;
+        font-weight: 600;
+        color: var(--dark-color);
+        background-color: #f8f9fa;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+      }
+
+      .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 1rem;
+      }
+
+      .form-label {
+        font-weight: 500;
+      }
+
+      .shipment-card {
+        border-left: 4px solid var(--primary-color);
+      }
+
+      .action-buttons .btn {
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .filter-section {
+        background-color: #f8f9fa;
+        border-radius: 0.375rem;
+        padding: 1rem;
+      }
+
+      .sack-id {
+        font-family: "Courier New", monospace;
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+
+      .shipment-summary-card {
+        text-align: center;
+        padding: 1.5rem;
+      }
+
+      .shipment-summary-card .value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--primary-color);
+      }
+
+      .shipment-summary-card .label {
+        color: var(--dark-color);
+        font-size: 0.875rem;
+      }
+
+      .shipment-timeline {
+        position: relative;
+        padding-left: 2rem;
+      }
+
+      .shipment-timeline::before {
+        content: "";
+        position: absolute;
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #e9ecef;
+      }
+
+      .timeline-item {
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -2rem;
+        top: 5px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        border: 2px solid white;
+      }
+
+      .timeline-item.success::before {
+        background-color: #28a745;
+      }
+
+      .timeline-item.warning::before {
+        background-color: #ffc107;
+      }
+
+      .timeline-item.secondary::before {
+        background-color: #6c757d;
+      }
+
+      .sack-tag {
+        display: inline-block;
+        background-color: #e9ecef;
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        padding: 0.25rem 0.5rem;
+        margin: 0.125rem;
+        font-size: 0.75rem;
+      }
+
+      .progress-bar-custom {
+        background-color: var(--primary-color);
+      }
+
+      .map-preview {
+        height: 200px;
+        background: linear-gradient(145deg, #e9ecef, #dee2e6);
+        border-radius: 0.375rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.hml"> <i class="bi bi-droplet-half"></i> NOTQS </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"> <i class="bi bi-person-circle"></i> Budi (Manado Operator) </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 col-lg-2 d-md-block sidebar">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html"> <i class="bi bi-speedometer2"></i> Dashboard </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="sack-management.html"> <i class="bi bi-bag"></i> Sack Management </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="payment.html"> <i class="bi bi-cash-coin"></i> Payments </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="shipments.html"> <i class="bi bi-truck"></i> Shipments </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="report-List.html"> <i class="bi bi-graph-up"></i> Reports </a>
+              </li>
+              <li class="nav-item">
+                <hr class="dropdown-divider" />
+              </li>
+              <li class="nav-item">
+                <small class="text-muted px-3">MANADO OPERATOR</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-10 col-lg-10 ms-sm-auto px-md-4 py-4">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active">Shipment Management</li>
+            </ol>
+          </nav>
+
+          <!-- Page Header -->
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Shipment Management</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="bi bi-funnel"></i> Filter</button>
+              <button class="btn btn-sm btn-outline-secondary me-2"><i class="bi bi-download"></i> Export</button>
+              <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newShipmentModal"><i class="bi bi-plus-circle"></i> New Shipment</button>
+            </div>
+          </div>
+
+          <!-- Shipment Summary Cards -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card shipment-summary-card">
+                <div class="value">3</div>
+                <div class="label">Ready for Shipment</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card shipment-summary-card">
+                <div class="value">2</div>
+                <div class="label">In Transit</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card shipment-summary-card">
+                <div class="value">142</div>
+                <div class="label">Sacks This Month</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card shipment-summary-card">
+                <div class="value">98.5%</div>
+                <div class="label">On-Time Delivery</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter Section -->
+          <div class="card mb-4 filter-section">
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="form-label">Shipment Status</label>
+                  <select class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="CREATED">Created</option>
+                    <option value="READY">Ready for Dispatch</option>
+                    <option value="IN_TRANSIT">In Transit</option>
+                    <option value="DELIVERED">Delivered</option>
+                    <option value="VERIFIED">Verified</option>
+                    <option value="DISCREPANCY">Discrepancy</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Date Range</label>
+                  <input type="date" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Destination</label>
+                  <select class="form-select">
+                    <option value="">All Destinations</option>
+                    <option value="MILLENNIUM">Millennium Tangerang</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Search</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Shipment ID or Sack ID" />
+                    <button class="btn btn-outline-secondary" type="button">
+                      <i class="bi bi-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12">
+                  <button class="btn btn-primary">Apply Filters</button>
+                  <button class="btn btn-outline-secondary">Clear</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shipment List -->
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span>Shipment Registry</span>
+              <div class="text-muted small">Showing 1-6 of 12 shipments</div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Shipment ID</th>
+                      <th>Destination</th>
+                      <th>Sacks</th>
+                      <th>Total Weight</th>
+                      <th>Status</th>
+                      <th>Departure</th>
+                      <th>Arrival</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="sack-id">SHIP-MDO-20241027-001</span></td>
+                      <td>Millennium Tangerang</td>
+                      <td>
+                        <span class="badge bg-light text-dark">24 sacks</span>
+                      </td>
+                      <td>612.4 kg</td>
+                      <td><span class="badge bg-warning status-badge">READY</span></td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>
+                        <div class="action-buttons">
+                          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#shipmentDetailModal">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                          <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#dispatchShipmentModal">
+                            <i class="bi bi-truck"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-printer"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="sack-id">SHIP-MDO-20241026-003</span></td>
+                      <td>Millennium Tangerang</td>
+                      <td>
+                        <span class="badge bg-light text-dark">18 sacks</span>
+                      </td>
+                      <td>458.2 kg</td>
+                      <td><span class="badge bg-primary status-badge">IN TRANSIT</span></td>
+                      <td>Oct 26, 14:30</td>
+                      <td>-</td>
+                      <td>
+                        <div class="action-buttons">
+                          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#shipmentDetailModal">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-geo-alt"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-printer"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="sack-id">SHIP-MDO-20241025-002</span></td>
+                      <td>Millennium Tangerang</td>
+                      <td>
+                        <span class="badge bg-light text-dark">22 sacks</span>
+                      </td>
+                      <td>554.8 kg</td>
+                      <td><span class="badge bg-success status-badge">VERIFIED</span></td>
+                      <td>Oct 25, 09:15</td>
+                      <td>Oct 26, 16:45</td>
+                      <td>
+                        <div class="action-buttons">
+                          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#shipmentDetailModal">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-printer"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-graph-up"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="sack-id">SHIP-MDO-20241024-001</span></td>
+                      <td>Millennium Tangerang</td>
+                      <td>
+                        <span class="badge bg-light text-dark">20 sacks</span>
+                      </td>
+                      <td>498.6 kg</td>
+                      <td><span class="badge bg-success status-badge">VERIFIED</span></td>
+                      <td>Oct 24, 11:20</td>
+                      <td>Oct 25, 14:30</td>
+                      <td>
+                        <div class="action-buttons">
+                          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#shipmentDetailModal">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-printer"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="sack-id">SHIP-MDO-20241023-002</span></td>
+                      <td>Millennium Tangerang</td>
+                      <td>
+                        <span class="badge bg-light text-dark">16 sacks</span>
+                      </td>
+                      <td>402.3 kg</td>
+                      <td><span class="badge bg-danger status-badge">DISCREPANCY</span></td>
+                      <td>Oct 23, 13:45</td>
+                      <td>Oct 24, 17:20</td>
+                      <td>
+                        <div class="action-buttons">
+                          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#shipmentDetailModal">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-warning">
+                            <i class="bi bi-exclamation-triangle"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination -->
+              <nav aria-label="Shipment pagination">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                  </li>
+                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <!-- Ready for Shipment Alert -->
+          <div class="alert alert-info mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <i class="bi bi-info-circle-fill me-2"></i>
+                <strong>Shipment Ready:</strong> You have 3 shipments with 64 sacks totaling 1,584 kg ready for dispatch to Millennium Tangerang.
+              </div>
+              <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#newShipmentModal">Create New Shipment</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Shipment Detail Modal -->
+    <div class="modal fade" id="shipmentDetailModal" tabindex="-1" aria-labelledby="shipmentDetailModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="shipmentDetailModalLabel">Shipment Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="card shipment-card mb-3">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <h4 class="mb-1">SHIP-MDO-20241026-003</h4>
+                        <p class="text-muted mb-2">Manado → Millennium Tangerang</p>
+                        <span class="badge bg-primary status-badge">IN TRANSIT</span>
+                      </div>
+                      <div class="text-end">
+                        <p class="mb-1"><strong>Total Weight:</strong> 458.2 kg</p>
+                        <p class="mb-0"><strong>Total Sacks:</strong> 18 sacks</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card mb-3">
+                      <div class="card-header">
+                        <h6 class="mb-0">Shipping Information</h6>
+                      </div>
+                      <div class="card-body">
+                        <table class="table table-sm table-borderless">
+                          <tr>
+                            <td><strong>Origin:</strong></td>
+                            <td>Manado Intake Facility</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Destination:</strong></td>
+                            <td>Millennium Tangerang</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Departure:</strong></td>
+                            <td>October 26, 2024 14:30</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Estimated Arrival:</strong></td>
+                            <td>October 27, 2024 18:00</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Transport:</strong></td>
+                            <td>PT. Logistik Indonesia - TRK-7890</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Driver:</strong></td>
+                            <td>Bambang (+62 812-3456-7891)</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card mb-3">
+                      <div class="card-header">
+                        <h6 class="mb-0">Quality Information</h6>
+                      </div>
+                      <div class="card-body">
+                        <table class="table table-sm table-borderless">
+                          <tr>
+                            <td><strong>Avg Moisture:</strong></td>
+                            <td>10.2%</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Moisture Range:</strong></td>
+                            <td>8.7% - 13.5%</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Payment Status:</strong></td>
+                            <td><span class="badge bg-success">100% Paid</span></td>
+                          </tr>
+                          <tr>
+                            <td><strong>Shrinkage Allowance:</strong></td>
+                            <td>2.0%</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <h6 class="mb-0">Sacks in Shipment</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-sm">
+                        <thead>
+                          <tr>
+                            <th>Sack ID</th>
+                            <th>Farmer</th>
+                            <th>Gross Weight</th>
+                            <th>Moisture</th>
+                            <th>Adjusted Weight</th>
+                            <th>Payment Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><span class="sack-id">MDO-20241026-00043</span></td>
+                            <td>Joko</td>
+                            <td>27.1 kg</td>
+                            <td>13.5%</td>
+                            <td>23.2 kg</td>
+                            <td><span class="badge bg-warning">Pending</span></td>
+                          </tr>
+                          <tr>
+                            <td><span class="sack-id">MDO-20241026-00044</span></td>
+                            <td>Rahmat</td>
+                            <td>24.8 kg</td>
+                            <td>8.7%</td>
+                            <td>24.5 kg</td>
+                            <td><span class="badge bg-success">Paid</span></td>
+                          </tr>
+                          <tr>
+                            <td><span class="sack-id">MDO-20241026-00045</span></td>
+                            <td>Siti</td>
+                            <td>26.3 kg</td>
+                            <td>15.2%</td>
+                            <td>21.9 kg</td>
+                            <td><span class="badge bg-warning">Pending</span></td>
+                          </tr>
+                          <!-- More rows would be here in a real implementation -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    <h6 class="mb-0">Shipment Timeline</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="shipment-timeline">
+                      <div class="timeline-item success">
+                        <h6 class="mb-1">Shipment Created</h6>
+                        <p class="mb-1 text-muted">October 26, 2024 10:15</p>
+                        <p class="mb-2">Packing list generated for 18 sacks</p>
+                      </div>
+                      <div class="timeline-item success">
+                        <h6 class="mb-1">Quality Checked</h6>
+                        <p class="mb-1 text-muted">October 26, 2024 11:30</p>
+                        <p class="mb-2">All sacks moisture tested and verified</p>
+                      </div>
+                      <div class="timeline-item success">
+                        <h6 class="mb-1">Loaded for Transport</h6>
+                        <p class="mb-1 text-muted">October 26, 2024 13:45</p>
+                        <p class="mb-2">Sacks loaded onto truck TRK-7890</p>
+                      </div>
+                      <div class="timeline-item warning">
+                        <h6 class="mb-1">Departed Manado</h6>
+                        <p class="mb-1 text-muted">October 26, 2024 14:30</p>
+                        <p class="mb-2">Shipment en route to Millennium Tangerang</p>
+                      </div>
+                      <div class="timeline-item secondary">
+                        <h6 class="mb-1">In Transit</h6>
+                        <p class="mb-1 text-muted">Current Status</p>
+                        <p class="mb-2">Estimated arrival: October 27, 18:00</p>
+                      </div>
+                      <div class="timeline-item secondary">
+                        <h6 class="mb-1">Awaiting Verification</h6>
+                        <p class="mb-1 text-muted">Pending</p>
+                        <p class="mb-0">Millennium QC will verify upon arrival</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card mt-3">
+                  <div class="card-header">
+                    <h6 class="mb-0">Transport Tracking</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="map-preview mb-3">
+                      <i class="bi bi-geo-alt-fill me-2"></i>
+                      Live Tracking Map
+                    </div>
+                    <div class="mb-3">
+                      <div class="d-flex justify-content-between mb-1">
+                        <small>Manado</small>
+                        <small>65% Complete</small>
+                        <small>Tangerang</small>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 65%"></div>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button class="btn btn-outline-primary btn-sm"><i class="bi bi-geo-alt"></i> View Live Location</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-primary"><i class="bi bi-printer"></i> Print Packing List</button>
+            <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i> Update Status</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Shipment Modal -->
+    <div class="modal fade" id="newShipmentModal" tabindex="-1" aria-labelledby="newShipmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newShipmentModalLabel">Create New Shipment</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Destination</label>
+                  <select class="form-select" required>
+                    <option value="">Select Destination</option>
+                    <option value="MILLENNIUM" selected>Millennium Tangerang</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Transport Provider</label>
+                  <select class="form-select" required>
+                    <option value="">Select Provider</option>
+                    <option value="LOGISTIK_INDO">PT. Logistik Indonesia</option>
+                    <option value="JNE">JNE Logistics</option>
+                    <option value="TIKI">TIKI Cargo</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Available Sacks for Shipment</label>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="table-responsive" style="max-height: 300px">
+                      <table class="table table-sm">
+                        <thead>
+                          <tr>
+                            <th><input type="checkbox" class="form-check-input" id="selectAllSacks" /></th>
+                            <th>Sack ID</th>
+                            <th>Farmer</th>
+                            <th>Adjusted Weight</th>
+                            <th>Moisture</th>
+                            <th>Payment Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><input type="checkbox" class="form-check-input sack-checkbox" checked /></td>
+                            <td><span class="sack-id">MDO-20241027-001</span></td>
+                            <td>Samsudin</td>
+                            <td>24.8 kg</td>
+                            <td>9.2%</td>
+                            <td><span class="badge bg-success">Paid</span></td>
+                          </tr>
+                          <tr>
+                            <td><input type="checkbox" class="form-check-input sack-checkbox" checked /></td>
+                            <td><span class="sack-id">MDO-20241027-002</span></td>
+                            <td>Joko</td>
+                            <td>23.2 kg</td>
+                            <td>13.5%</td>
+                            <td><span class="badge bg-warning">Pending</span></td>
+                          </tr>
+                          <tr>
+                            <td><input type="checkbox" class="form-check-input sack-checkbox" /></td>
+                            <td><span class="sack-id">MDO-20241027-003</span></td>
+                            <td>Rahmat</td>
+                            <td>24.5 kg</td>
+                            <td>8.7%</td>
+                            <td><span class="badge bg-success">Paid</span></td>
+                          </tr>
+                          <!-- More rows would be here in a real implementation -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="mt-3">
+                      <strong>Selected: <span id="selectedCount">2</span> sacks • Total Weight: <span id="totalWeight">48.0</span> kg</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Planned Departure</label>
+                  <input type="datetime-local" class="form-control" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Estimated Arrival</label>
+                  <input type="datetime-local" class="form-control" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Shipping Notes</label>
+                <textarea class="form-control" rows="3" placeholder="Any special instructions or notes for this shipment"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Create Shipment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dispatch Shipment Modal -->
+    <div class="modal fade" id="dispatchShipmentModal" tabindex="-1" aria-labelledby="dispatchShipmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="dispatchShipmentModalLabel">Dispatch Shipment</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="card mb-3">
+              <div class="card-body">
+                <h6 class="card-title">Shipment Information</h6>
+                <table class="table table-sm table-borderless">
+                  <tr>
+                    <td><strong>Shipment ID:</strong></td>
+                    <td>SHIP-MDO-20241027-001</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Destination:</strong></td>
+                    <td>Millennium Tangerang</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Total Sacks:</strong></td>
+                    <td>24 sacks</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Total Weight:</strong></td>
+                    <td>612.4 kg</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <form>
+              <div class="mb-3">
+                <label class="form-label">Transport Details</label>
+                <select class="form-select" required>
+                  <option value="">Select Transport</option>
+                  <option value="TRK-7890">TRK-7890 - PT. Logistik Indonesia</option>
+                  <option value="TRK-6543">TRK-6543 - JNE Logistics</option>
+                  <option value="TRK-3210">TRK-3210 - TIKI Cargo</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Driver Information</label>
+                <input type="text" class="form-control" placeholder="Driver name and contact" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Actual Departure Time</label>
+                <input type="datetime-local" class="form-control" required />
+              </div>
+
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="sealIntact" />
+                  <label class="form-check-label" for="sealIntact"> Container seal intact and verified </label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Confirm Dispatch</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // JavaScript for shipment management functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        // Bulk sack selection
+        const selectAllSacks = document.getElementById("selectAllSacks")
+        const sackCheckboxes = document.querySelectorAll(".sack-checkbox")
+
+        if (selectAllSacks) {
+          selectAllSacks.addEventListener("change", function () {
+            sackCheckboxes.forEach(checkbox => {
+              checkbox.checked = selectAllSacks.checked
+            })
+            updateShipmentSummary()
+          })
+        }
+
+        // Update shipment summary when sacks are selected/deselected
+        sackCheckboxes.forEach(checkbox => {
+          checkbox.addEventListener("change", updateShipmentSummary)
+        })
+
+        function updateShipmentSummary() {
+          const selectedCount = document.querySelectorAll(".sack-checkbox:checked").length
+          let totalWeight = 0
+
+          document.querySelectorAll(".sack-checkbox:checked").forEach(checkbox => {
+            const row = checkbox.closest("tr")
+            const weightCell = row.cells[3] // Adjusted weight column
+            const weight = parseFloat(weightCell.textContent) || 0
+            totalWeight += weight
+          })
+
+          document.getElementById("selectedCount").textContent = selectedCount
+          document.getElementById("totalWeight").textContent = totalWeight.toFixed(1)
+        }
+
+        // Initialize summary
+        updateShipmentSummary()
+      })
+    </script>
+  </body>
+</html>
